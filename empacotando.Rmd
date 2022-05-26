@@ -112,7 +112,7 @@ usethis::create_package("ipca")
 
 O comando criará os seguintes arquivos:
 
-- `.gitignore` antecipa o uso do Git e cria um arquvo de instruções ao Git para ignorar no repositório alguns arquivos padrão criados automaticamente pelo R e RStudio (`.Rproj.user`, `.Rhistory`, etc.);
+- `.gitignore` antecipa o uso do Git e cria um arquivo de instruções ao Git para ignorar no repositório alguns arquivos padrão criados automaticamente pelo R e RStudio (`.Rproj.user`, `.Rhistory`, etc.);
 - `.Rbuildignore` lista os arquivos que precisamos ter, mas que não devem ser incluídos ao compilar o pacote;
 - `DESCRIPTION` fornece metadados (descrição) sobre seu pacote;
 - `ipca.Rproj` é o arquivo que torna o diretório em um projeto de RStudio;
@@ -497,7 +497,7 @@ Uma vez que todas as funcionalidades tenham sido criadas, é importante executar
 devtools::check()
 ```
 
-```{r, echo=FALSE, out.width="70%"}
+```{r, echo=FALSE, out.width="60%"}
 knitr::include_graphics("imgs/check04.png")
 ```
 
@@ -511,7 +511,7 @@ Agora iremos subir para a plataforma do GitHub este repositório local que vinha
 
 Antes de subir o pacote para o GitHub, porém, é também importante criar um arquivo README com as informações gerais sobre o repositório, sobre o pacote e sobre sua utilização. Esse procedimento é opcional, mas é uma boa prática em desenvolvimento de softwares que constitui o ponto de inflexão entre as pessoas utilizarem ou não o seu pacote. Se não houverem informações básicas no repositório sobre como instalar o pacote, muito provavelmente as pessoas não saberão como fazê-lo e, portanto, não utilizarão o pacote.
 
-Para criar o arquivo README basta executa o comando abaixo:
+Para criar o arquivo README basta executar o comando abaixo:
 
 ```r
 usethis::use_readme_rmd()
@@ -625,11 +625,13 @@ knitr::include_graphics("imgs/github.gif")
 ---
 ### Instalação a partir do GitHub
 
-Dessa forma, agora podemos testar a instalação do pacote `{ipca}` em qualquer computador usando o comando abaixo (se o repositório for público; em caso de repositório privado utilize o argumento `auth_token`). Note que você deve substituir o nome da conta de usuário e nome do repositório para corresponder às suas informações. Se você executar o comando abaixo sem substituir as informações você obterá um erro.
+Dessa forma, agora podemos testar a instalação do pacote `{ipca}` em qualquer computador usando o comando abaixo (se o repositório for público; em caso de repositório privado utilize o argumento `auth_token`). É importante executar o comando em uma sessão nova de R. 
 
 ```r
 remotes::install_github("schoulten/ipca")
 ```
+
+Note que você deve substituir o nome da conta de usuário e nome do repositório para corresponder às suas informações. Se você executar o comando sem substituir as informações você obterá um erro.
 
 Você pode testar a instalação em seu próprio computador ou em um ambiente de R na nuvem como o RStudio Cloud ou Google Colab. Para saber como usar essas plataformas confira [este post no blog da Análise Macro](https://analisemacro.com.br/data-science/como-rodar-o-r-na-nuvem-google-colab-e-rstudio-cloud/).
 
@@ -641,15 +643,203 @@ Após instalar, vale testar o carregamento do pacote (`library()`) e testar suas
 ---
 ### Criando testes automatizados com GitHub Actions
 
-Uma forma mais robusta de testar o seu pacote está funcional é o uso de testes de integração contínua. Este tópico é mais complexo e avançado, mas em termos práticos pode ser facilmente implementado usando uma função do `{usethis}` para configurar um workflow no GitHub Actions.
+Uma forma mais robusta de testar se o seu pacote está funcional é o uso de testes de integração contínua. Este tópico é mais complexo e avançado, mas em termos práticos pode ser facilmente implementado usando uma única função do `{usethis}` para configurar um workflow no GitHub Actions.
 
 Em resumo, o que faremos é criar uma rotina automatiza de testagem do nosso pacote hospedado no GitHub, através de uma instrução para que os servidores do GitHub testem com um `R CMD check` se o nosso pacote está funcionando corretamente (similar ao que fizemos diversas vezes com o `devtools::check()`). Ou seja, deixaremos o trabalho manual de lado para que uma máquina faça isso por nós. E isso será feito em múltiplas plataformas — Windows, Linux, MacOS, etc. —, garantindo assim maior certeza sobre a funcionalidade do pacote. Testes automatizados fazem parte das boas práticas de programação, sendo altamente recomendável termos esse processo se o pacote/software será utilizado por outras pessoas.
 
 Parar criar o teste automatizado basta executar o comando abaixo:
 
 ```r
-
+usethis::use_github_action_check_standard()
 ```
+
+Será criado um arquivo de workflow (`.yaml`) implementando rotinas de `R CMD check`.  Após isso renderize novamente seu arquivo README criado anteriormente.
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Em seguida realize o *commit* e *push* dessas alterações do repositório. Como resultado você deve ter trabalhos em execução na aba *Actions* do repositório no GitHub.
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("imgs/actions.png")
+```
+
+O esperado é que todos os testes retornem resultado de sucesso. Se você obtiver erros, avisos ou notas, dependendo do que for, leia o resultado para investigar uma solução.
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Em nosso caso, precisamos corrigir os pacotes declarados como dependências, pois obtivemos a seguinte nota no `R CMD check` executado no GitHub Actions (acesse os resultados clicando na aba *Actions* > *Workflow* executado > em *Job* selecione um sistema operacional > expanda o *step* "*Run r-lib/actions/check-r-package@v1*"):
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("imgs/note.png")
+```
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+.pull-left[
+
+Para solucionar o problema é necessário remover manualmente os pacotes da seção `Imports` do arquivo `DESCRIPTION` e colocar os mesmos na seção `Suggests` com o comando:
+
+```r
+usethis::use_package("<NOME DO PACOTE>", type = "Suggests")
+```
+
+Como resultado teremos:
+
+]
+
+.pull-right[
+
+```{r, echo=FALSE}
+knitr::include_graphics("imgs/description.png")
+```
+
+]
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Novamente, faça o *commit* e *push* das alterações realizadas no respositório e aguarde os resultados do novo teste `R CMD check` que será executado automaticamente pelo GitHub Actions. Como resultado você deve ter algo aproximado com o apresentado abaixo:
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("imgs/actions_check.gif")
+```
+
+o que já é suficiente para o nosso propósito<sup>1</sup>.
+
+.footnote[
+
+<sup>1</sup> O *warning* na plataforma Windows é devido ao uso de caracteres não ASCII na documentação da função `build_dashboard()`, o que acaba gerando no arquivo de help da função uma codificação não suportada nesse trecho; isso pode ser resolvido ao não utilizar estes caracteres ou envolvendo o texto com a função `rlang::as_utf8_character`.
+
+]
+
+
+---
+### Criando rotina de automatização do modelo
+
+Agora que temos um pacote para o modelo do IPCA funcional e hospedado no GitHub, iremos utilizá-lo para automatizar o processo de gerar previsões e reportar os resultados em uma dashboard. Isso será feito, novamente, com a ajuda do GitHub Actions.
+
+O procedimento é muito semelhante ao já abordado na Parte 02 desta aula, a única diferença é que em vez de chamar diretamente um arquivo de script de R no workflow do GitHub Actions, chamaremos as funções do próprio pacote `{ipca}` que realizam o mesmo trabalho. Sendo assim, os procedimentos para criar essa rotina de automatização são os mesmos, o que muda é o *Step* no workflow que realiza todos os procedimentos do modelo (dados, treinamento, dashboard, etc.). 
+
+Indo direto ao ponto, realizamos os seguintes procedimentos:
+
+1. Configurar o gerenciamento de dependências: `{renv}`;
+2. Adicionar o novo arquivo YAML com ajustes (próx. slide);
+3. Realizar *commit* e *push* das alterações;
+4. Aguardar resultados dos workflows;
+5. Configurar link da dashboard no GitHub Pages.
+
+Conforme mencionado, estes procedimentos já foram todos abordados previamente, a seguir mostramos apenas os resultados.
+
+
+---
+### Criando rotina de automatização do modelo
+
+O novo arquivo YAML adicionado possui as seguintes instruções (repare as linhas 42 a 63 para observar as diferenças):
+
+```yaml
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  push:
+    branches: [main, master]
+  schedule:
+    - cron: "0 0 15 * *"
+
+name: Model update
+
+jobs:
+  model-update:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      RENV_PATHS_ROOT: ~/.local/share/renv
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install curl
+        run: sudo apt -y install libcurl4-openssl-dev
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore packages
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore()
+        shell: Rscript {0}
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Install workflow dependencies
+        run: |
+          install.packages(c("withr", "devtools"))
+        shell: Rscript {0}
+
+      - name: Set locale
+        run: |
+          sudo apt-get update && sudo apt-get install tzdata locales -y && sudo locale-gen pt_BR.UTF-8
+          sudo localectl set-locale LANG="pt_BR.UTF-8"
+          export LANG="pt_BR.UTF-8"
+          sudo update-locale
+          locale -a
+          locale
+          locale -c -k LC_NUMERIC
+          localectl status
+
+      - name: Update model and knit dashboard
+        run: |
+          devtools::load_all()
+          withr::local_locale(c("LC_TIME" = "pt_BR.utf8"))
+          build_dashboard()
+        shell: Rscript {0}
+
+      - name: Commit results
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add .
+          git commit -m "Update model and dashboard" || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
+```
+
+
+---
+### Criando rotina de automatização do modelo
+
+Resultado do `R CMD check` no GitHub Actions:
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("imgs/actions_check2.png")
+```
+
+Link para a dashboard automatizada: [https://analisemacropro.github.io/ipca/](https://analisemacropro.github.io/ipca/)
+
+
+---
+### Comentários
+
+O pacote `{ipca}` possui muitas dependências e isso é problemático. Por exemplo, se, por qualquer motivo, algum dos pacotes utilizados internamente para coletar dados falhar (o que é muito comum), o pacote `{ipca}` também irá falhar, inviabilizando seu uso. Isso pode ser contornado diminuindo o número de pacotes externos utilizados ou utilizando os mesmos de forma condicional. Procedimentos mais robustos na coleta de dados também podem ser adotados. Para saber mais sobre isso consulte Wickham, H. (2015) e [este post](https://analisemacro.com.br/data-science/lidando-com-erros-de-funcoes-que-podem-falhar-usando-o-purrr/) no blog da Análise Macro. Outra opção é utilizar um banco de dados proprietário, eliminando do seu código múltiplas dependências de API's de dados.
+
+Como exemplo, podemos citar que durante o desenvolvimento do pacote `{ipca}` encontramos problemas com uma de suas dependências: o pacote `{gtrendsR}` passou a apresentar um erro inesperadamente em sua versão 1.5.0, inviabilizando esta etapa de coleta de dados do fluxo de trabalho interno do pacote `{ipca}`. Neste caso, tivemos que aguardar os desenvolvedores do `{gtrendsR}` corrigirem o problema, através do lançamento da versão 1.5.1. Ou seja, consumo de dados públicos é uma vulnerabilidade em qualquer código no longo prazo, sendo grandes as chances de você precisar alterar o seu código quando uma mudança de API de dados, por exemplo, acontecer. Em outras palavras, desenvolver modelos de previsão não é apenas sobre modelos, mas sobretudo o processamento de dados implementado. 
+
+Infelizmente não temos como prever esses acontecimentos e fornecemos apenas um código funcional no momento em que o mesmo é criado. As rotinas de automatização podem ajudar a monitorar a funcionalidade do código ao longo do tempo e, assim, podemos agir com um correção quando um erro acontecer. Se você encontrar algum erro no código não exite em reportar ao suporte da Análise Macro!
+
+
 
 
 ---

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Parte 03 - Empacotando o código</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Fernando da Silva Data Scientist       " />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/fabric/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#282f6b"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":true,"autoSearch":true}) })</script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copiar","success":"Copiado!","error":"Pressione Ctrl+C para copiar"})</script>
+    <script src="libs/xaringanExtra-progressBar/progress-bar.js"></script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Parte 03 - Empacotando o código
+### Fernando da Silva<br><span style="font-size: 70%;">Data Scientist<br><a href="https://github.com/schoulten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="rfa" style="height:0.75em;fill:#282f6b;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></a>  <a href="https://www.linkedin.com/in/schoulten/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="rfa" style="height:0.75em;fill:#282f6b;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>  <a href="mailto:fernando@fortietwo.com"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="rfa" style="height:0.75em;fill:#282f6b;position:relative;"><path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"/></svg></a>  <a href="https://analisemacro.com.br/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="rfa" style="height:0.75em;fill:#282f6b;position:relative;"><path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/></svg></a></span>
+### <span style="font-size: 70%;">26 de maio de 2022</span>
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+pre {
+  white-space: pre-wrap;
+  overflow-y: scroll !important;
+  max-height: 45vh !important;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.tiny85 .remark-code {
+  font-size: 85%; !important;
+}
+.tiny75 .remark-code {
+  font-size: 75%; !important;
+}
+.tiny65 .remark-code {
+  font-size: 65%; !important;
+}
+.tiny55 .remark-code {
+  font-size: 55%; !important;
+}
+.tiny45 .remark-code {
+  font-size: 45%; !important;
+}
+&lt;/style&gt;
+
+
+
+### Temas de hoje
+
+
+- Por que empacotar o código?
+- Criando a estrutura de arquivos
+  - Usando o `{usethis}`
+  - Repositório local e licença de software
+  - Preenchendo a descrição
+- Modularizando o código em funções
+  - Criando as funções
+  - Testando as funções
+  - Testando o pacote
+  - Declarando dependências
+  - Documentando as funções
+  - Fluxo de trabalho
+  - Resumo das funções criadas
+- Deploy do pacote
+  - Teste local com o `{devtools}`
+  - Subindo o pacote para o GitHub
+  - Instalação a partir do GitHub
+  - Criando testes automatizados com GitHub Actions
+  - Criando rotina de automatização do modelo
+
+
+
+---
+class: middle, center, inverse
+# Por que empacotar o código?
+
+
+---
+### Por que empacotar o código?
+
+Quando criamos um pacote de R estamos, em verdade, criando um software. Dessa forma, o motivo de desenvolver um pacote é, primariamente, propiciar utilidades para benefício de outras pessoas. Em outras palavras, é uma forma de generalizar procedimentos para que outras pessoas possam usufruir do seu código para proveito próprio.
+
+Em se tratando de um código de um modelo de previsão, podemos destacar algumas vantagens ao empacotá-lo:
+
+- Em uma empresa, possibilita que outros usuários (possivelmente leigos) instalem seu pacote para ter acesso facilitado à estimação/previsão do modelo;
+- Mantém código, dados, documentação, etc. tudo compactado em apenas um lugar;
+- Você pode rodar o modelo e obter previsões virtualmente em qualquer computador, basta ter o pacote instalado, sem precisar copiar e colar manualmente o código do modelo;
+- A generalização do código pode tornar seu uso mais propício em ambientes de produção e na nuvem;
+- Permite utilizar testes de software para maior robustez em relação a boas práticas de programação e de reprodutibilidade.
+
+Dito isso, **o objetivo dessa aula é criar um pacote simples que comporte, como exemplo, o código do modelo de previsão do IPCA**. A ideia é manter tudo o mais simples e funcional possível, pois o tópico é avançado; dessa forma, não nos aprofundaremos muito sobre as minúcias de desenvolvimento de pacotes, mas você pode se aprofundar no assunto com o livro *R Packages* do Hadley Wickham, referência dessa aula.
+
+
+
+---
+class: middle, center, inverse
+# Criando a estrutura de arquivos
+
+
+---
+### Usando o `{usethis}`
+
+Para criar a estrutura básica de um pacote primeiro defina o diretório de trabalho na sessão do R e, em seguida, execute o comando abaixo, onde o nome do pacote está entre aspas:
+
+```r
+usethis::create_package("ipca")
+```
+
+O comando criará os seguintes arquivos:
+
+- `.gitignore` antecipa o uso do Git e cria um arquivo de instruções ao Git para ignorar no repositório alguns arquivos padrão criados automaticamente pelo R e RStudio (`.Rproj.user`, `.Rhistory`, etc.);
+- `.Rbuildignore` lista os arquivos que precisamos ter, mas que não devem ser incluídos ao compilar o pacote;
+- `DESCRIPTION` fornece metadados (descrição) sobre seu pacote;
+- `ipca.Rproj` é o arquivo que torna o diretório em um projeto de RStudio;
+- `NAMESPACE` declara as funções que seu pacote exporta para uso externo e as funções externas que seu pacote importa de outros pacotes. Neste momento está vazio, exceto por um comentário declarando que este é um arquivo que não editaremos manualmente;
+- A pasta `R/` é o "corpo" do seu pacote, sendo onde adicionaremos arquivos `.R` com definições de funções do modelo de previsão do IPCA.
+
+
+---
+### Repositório local e licença de software
+
+Em seguida, transformamos o projeto em um repositório Git:
+
+```r
+usethis::use_git()
+```
+
+E adicionamos um licença de software ao pacote:
+
+```r
+usethis::use_mit_license("Análise Macro")
+```
+
+O pacote `usethis` oferece uma série de licenças já predefinidas, nesse caso usamos a licença MIT.
+
+
+---
+### Preenchendo a descrição
+
+Ainda nos primeiros passos de criação do pacote, é importante preencher o arquivo `DESCRIPTION`. Você pode abrir o arquivo no RStudio com o comando abaixo e então editá-lo:
+
+```r
+usethis::edit_file("DESCRIPTION")
+```
+
+O que você deve editar (em inglês):
+
+- `Title` uma frase em caixa de título resumindo o pacote;
+- `Authors@R` as informações sobre os autores/contribuidores do pacote: nome, sobrenome, função e ORCID. Se você não tiver ORCID basta omitir a parte contendo `comment = c(ORCID = "YOUR-ORCID-ID")`;
+- `Description` uma descrição mais longa (em um parágrafo) sobre o que o seu pacote faz.
+
+Ao final, salve o arquivo com as edições realizadas.
+
+
+---
+### Preenchendo a descrição
+
+Como exemplo, observe o preenchimento abaixo:
+
+```md
+Package: ipca
+Title: Brazilian Inflation Forecasting Model
+Version: 0.0.0.9000
+Authors@R: 
+    person("Fernando", "da Silva", , "fernando@fortietwo.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7491-6930"))
+Description: Series of functions for data collection and pre-processing, estimation of LASSO, CSR, Bagging and Ensemble models, training using cross-validation, forecasting and dashboard reporting.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+```
+
+Quanto mais simples e objetivo melhor!
+
+E agora que você já adicionou uma licença e preencheu as informações do pacote, é um bom momento para realizar o *commit* dessas alterações. Para evitar repetição não mostraremos aqui essa parte, mas faça isso constantemente durante o desenvolvimento do pacote.
+
+
+
+---
+class: middle, center, inverse
+# Modularizando o código em funções
+
+
+---
+### Criando as funções
+
+Agora vamos escrever a primeira função do pacote. Para tal, primeiro devemos abrir um script de R dentro da pasta R do projeto. Isso pode ser feito com o comando abaixo, onde `utils` é o nome do arquivo que será salvo:
+
+```r
+usethis::use_r("utils")
+```
+
+Neste arquivo `utils.R` colocaremos todas as funções úteis ou de uso geral do pacote. A primeira delas é a `report_ndiffs()`, já abordada previamente neste curso:
+
+
+```r
+report_ndiffs &lt;- function (
+  x,
+  test  = c("kpss", "adf", "pp"),
+  term  = c("level", "trend"),
+  alpha = 0.05,
+  na_rm = TRUE
+  ) {
+
+  # All possible tests and terms
+  ndiffs_tests &lt;- purrr::cross(list(test = test, type = term))
+  ndiffs_tests &lt;- purrr::set_names(
+    x  = ndiffs_tests,
+    nm = paste(
+      purrr::map_chr(ndiffs_tests, 1),
+      purrr::map_chr(ndiffs_tests, 2),
+      sep = "_"
+      )
+    )
+
+  # Nested for-loop
+  purrr::map(
+    .x = if (na_rm) {stats::na.omit(x)} else x,
+    .f = ~purrr::map(
+      .x = ndiffs_tests,
+      .f = function (y) {
+        forecast::ndiffs(
+          x     = .x,
+          alpha = alpha,
+          test  = y[[1]],
+          type  = y[[2]]
+          )
+        }
+      )
+    ) %&gt;%
+    purrr::map_df(dplyr::bind_rows, .id = "variable") %&gt;%
+    # Create column with most frequent value to differentiate
+    dplyr::rowwise() %&gt;%
+    dplyr::mutate(
+      ndiffs = dplyr::c_across(!dplyr::any_of("variable")) %&gt;%
+        table() %&gt;%
+        sort(decreasing = TRUE) %&gt;%
+        names() %&gt;%
+        purrr::chuck(1) %&gt;%
+        as.numeric()
+      ) %&gt;%
+    dplyr::ungroup()
+
+}
+```
+
+
+
+---
+### Criando as funções
+
+Coloque a definição, e somente a definição, de `report_ndiffs()` em `R/utils.R` e salve o arquivo. O mesmo não deve conter nenhum outro código que executamos recentemente, como `usethis::use_mit_license()`, `usethis::use_git()` e etc. Isso é importante pois os pacotes usam uma forma diferente de estruturar o código e declarar dependências em relação aos scripts que estamos acostumados a escrever.
+
+Falando em dependências, a função `report_ndiffs()` utiliza internamente o operador pipe `%&gt;%`, proveniente do pacote `{magrittr}`. Para que funcione precisamos que esse operador seja incorporado em nosso pacote como uma função, assim como acabamos de criar uma. Esse procedimento pode ser feito simplesmente chamando o comando abaixo, que criará um novo arquivo na pasta R para incorporar o operador pipe ao nosso pacote.
+
+```r
+usethis::use_pipe()
+```
+
+Note que o arquivo é criado e uma mensagem no Console solicita a execução de outro comando para atualizar o `NAMESPACE`, ou seja, tornar o operador pipe, de fato, uma função exportada pelo nosso pacote e com uma documentação. Portanto, em seguida executamos o comando (voltaremos nesse ponto com mais detalhes adiante):
+
+```r
+devtools::document()
+```
+
+E agora temos duas funções no pacote `{ipca}`!
+
+
+---
+### Testando as funções
+
+Como fazer um test drive da função `report_ndiffs()`? Se estivéssemos em um script de R normal, poderíamos usar o RStudio para enviar a definição da função para o Console e definir `report_ndiffs()` no Global Environment ou poderíamos usar `source("R/utils.R")`. Em se tratando de desenvolvimento de pacotes é necessário uma abordagem mais robusta e o pacote `{devtools}` pode ajudar.
+
+Execute o comando `devtools::load_all()` para disponibilizar `report_ndiffs()` para experimentação e depois utilize a função criada para averiguar o funcionamento:
+
+```r
+devtools::load_all()
+report_ndiffs(ggplot2::economics[-1])
+```
+
+Se você obteve um `tibble` com os resultados dos testes de estacionariedade para cada variável do dataset de exemplo significa, então, que está tudo funcionando!
+
+Note que `devtools::load_all()` disponibilizou a função `report_ndiffs()` para uso, embora ela não exista no Global Environment. O comando basicamente simula o processo de construção, instalação e carregamento do pacote `{ipca}`.
+
+
+---
+### Testando o pacote
+
+Adicionamos uma função e testamos seu funcionamento, mas como verificar que o pacote como um todo está funcionando? Mesmo que tenhamos apenas uma função é sempre bom rodar um teste completo no pacote e reexecutar o teste a cada alteração realizada.
+
+O comando `R CMD check` do próprio R, executado no Terminal/Shell, é o padrão-ouro para verificar se um pacote de R está em pleno funcionamento, executando uma série de verificações. A função `devtools::check()` é uma maneira conveniente de executar isso sem sair da sessão do R:
+
+```r
+devtools::check()
+```
+Em nosso caso, após rodar os testes obtemos o resultado (resumido):
+
+&lt;img src="imgs/check01.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+Leia os resultados dos testes! O objetivo será sempre obter "0 errors ✔ | 0 warnings ✔ | 0 notes ✔" ao final do teste. Recomenda-se resolver os problemas tão logo eles apareçam e de maneira frequente.
+
+
+---
+### Declarando dependências
+
+Você inevitavelmente desejará usar uma função de outro pacote em seu próprio pacote, como é o caso na função `report_ndiffs()`. O resultado do teste (*warning*) no pacote apontou justamente isso: estamos usando funções importadas de outros pacotes e não declarando elas em nosso pacote. Note que isso se aplica até mesmo a funções de pacotes que você considera “sempre disponíveis”, como `stats::median()` ou `utils::head()`.
+
+Dessa forma, com a função `usethis::use_package()` declaramos que usamos as funções dos pacotes listados abaixo em nosso pacote:
+
+```r
+usethis::use_package("dplyr")
+usethis::use_package("forecast")
+usethis::use_package("purrr")
+usethis::use_package("stats")
+```
+
+Testando o pacote novamente com `devtools::check()` obtemos o seguinte resultado:
+
+&lt;img src="imgs/check02.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+Agora está tudo certo!
+
+
+---
+### Documentando as funções
+
+Não seria bom obter ajuda ao chamar `?report_ndiffs()` no Console, assim como fazemos com outras funções do R? Isso requer que seu pacote tenha um arquivo de documentação especial do R, `man/report_ndiffs.Rd`, escrito em uma linguagem de marcação específica do R que é mais ou menos como o LaTeX. Felizmente, não precisamos necessariamente criar isso diretamente.
+
+Na prática, escreveremos um comentário especialmente formatado logo acima de `report_ndiffs()`, em seu arquivo fonte, e então deixamos o pacote `{roxygen2}` lidar com a criação de `man/report_ndiffs.Rd`.
+
+No RStudio, abra `R/utils.R` no editor e coloque o cursor do mouse em algum lugar na definição da função `report_ndiffs()`. Agora clique, nos menus do RStudio, em `Code &gt; Insert Roxygen Skeleton`. Linhas de comentário especiais devem aparecer acima da função, cada linha começando com `#'`. 
+
+
+---
+### Documentando as funções
+
+O RStudio só insere um modelo básico de documentação, portanto você precisará preencher as informações para ficar parecido com o abaixo.
+
+```r
+#' Report number of differences to make time series stationary (vectorized)
+#'
+#' @param x List-like object with vectors of the series to be tested
+#' @param test Type of unit root test to use, see forecast::ndiffs
+#' @param term Specification of the deterministic component in the regression, see forecast::ndiffs
+#' @param alpha Level of the test, possible values range from 0.01 to 0.1
+#' @param na_rm Remove NAs from x?
+#'
+#' @return Tibble with variable name from x and the number of differences found
+#' @export
+#'
+#' @examples
+#' ts1 &lt;- as.vector(arima.sim(list(order = c(1, 1, 0), ar = 0.7), n = 19))
+#' ts2 &lt;- rnorm(20)
+#' report_ndiffs(data.frame(ts1 = ts1, ts2 = ts2))
+report_ndiffs &lt;- function (
+  x,
+  test  = c("kpss", "adf", "pp"),
+  term  = c("level", "trend"),
+  alpha = 0.05,
+  na_rm = TRUE
+  ) {
+
+  # All possible tests and terms
+  ndiffs_tests &lt;- purrr::cross(list(test = test, type = term))
+  ndiffs_tests &lt;- purrr::set_names(
+    x  = ndiffs_tests,
+    nm = paste(
+      purrr::map_chr(ndiffs_tests, 1),
+      purrr::map_chr(ndiffs_tests, 2),
+      sep = "_"
+      )
+    )
+
+  # Nested for-loop
+  purrr::map(
+    .x = if (na_rm) {stats::na.omit(x)} else x,
+    .f = ~purrr::map(
+      .x = ndiffs_tests,
+      .f = function (y) {
+        forecast::ndiffs(
+          x     = .x,
+          alpha = alpha,
+          test  = y[[1]],
+          type  = y[[2]]
+          )
+        }
+      )
+    ) %&gt;%
+    purrr::map_df(dplyr::bind_rows, .id = "variable") %&gt;%
+    # Create column with most frequent value to differentiate
+    dplyr::rowwise() %&gt;%
+    dplyr::mutate(
+      ndiffs = dplyr::c_across(!dplyr::any_of("variable")) %&gt;%
+        table() %&gt;%
+        sort(decreasing = TRUE) %&gt;%
+        names() %&gt;%
+        purrr::chuck(1) %&gt;%
+        as.numeric()
+      ) %&gt;%
+    dplyr::ungroup()
+
+}
+```
+
+
+---
+### Documentando as funções
+
+E por fim, execute o comando abaixo para criar a documentação (arquivo de *help*, com extensão `.Rd`):
+
+```r
+devtools::document()
+```
+
+Ao pedir ajuda no Console com `?report_ndiffs` você deve ser direcionado a página da documentação da função.
+
+Novamente, rodando o teste no pacote obtemos sucesso em todas as verificações, com `devtools::check()`:
+
+&lt;img src="imgs/check03.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+### Fluxo de trabalho
+
+Os procedimentos demonstrados anteriormente constituem o fluxo de trabalho básico para criar um pacote, de forma que o que resta agora é:
+
+- Criar as demais funções do pacote;
+- Declarar dependências;
+- Testar as funções criadas;
+- Documentar as funções;
+- Testar o pacote (a cada alteração).
+
+Não mostraremos exaustivamente aqui este mesmo fluxo para cada uma das funções que o pacote `{ipca}` terá, mas mostramos um resumão, no próximo slide, sobre o que se trata cada função e alguns detalhes adicionais específicos à função em questão que você deve ficar de olho. Em caso de dúvidas contate o suporte da Análise Macro.
+
+
+---
+### Resumo das funções criadas
+
+Abaixo descrevemos brevemente cada função criada (com exceção das funções já expostas (`report_ndiffs` e `pipe`)). 
+
+Foi feito um pequeno esforço para generalizar as funções possibilitando seu uso em outros dados/problemas de previsão, mas, em geral, as funções foram desenhadas especificamente para o problema de previsão em questão (IPCA), ou seja, o trabalho realizado foi com base em adaptação do código já exposto. 
+
+Para maiores detalhes consulte individualmente as documentações das funções.
+
+
+---
+### Resumo das funções criadas
+
+<div id="htmlwidget-46c42926694d22922937" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-46c42926694d22922937">{"x":{"filter":"none","vertical":false,"data":[["ym_label()","get_data()","ts_transform()","train_models()","get_cv_rmse_hdecon()","forecast_ensemble()","build_dashboard()"],["R/utils.R","R/get_data.R","R/ts_transform.R","R/train_models.R","R/train_models.R","R/forecast_ensemble.R","R/build_dashboard.R"],["Função para formatar eixo de datas em um gráfico {ggplot2}, já abordada previamente no curso e utilizada nos gráficos da dashboard pela função build_dashboard()","Função \"caixa preta\" para coleta e tratamento prévio de dados, buscando séries econômicas do BCB, Google, IBGE e IPEADATA, conforme metadados apresentados previamente neste curso.","Função que aplica as etapas 5 a 8 do fluxo de trabalho para este modelo, exposto previamente neste curso.","Função que implementa a etapa 9 do fluxo de trabalho, ou seja, o método de validação cruzada para todos os modelos, incluindo o Focus, reportando o RMSE por horizonte preditivo.","Função auxiliar da função train_models(), para implementar a validação cruzada dos modelos CSR e Bagging","Função para gerar previsão fora da amostra utilizando um modelo combinado (Ensemble) a partir dos modelos CSR e Bagging","Função para gerar um arquivo HTML da Flexdashboard de resultados do modelo de previsão do IPCA, possibilitando a automatização das etapas de coleta/tratamento de dados, treinamento dos modelos e previsão fora da amostra."],["","As informações de metadados para coletar as séries temporais nas fontes citadas foram inseridas como um dataset do próprio pacote (arquivo sysdata.rda) que é usado internamente na função, em vez de usar um arquivo CSV como abordado previamente neste curso. Este procedimento tem a finalidade de cumprir as normas de desenvolvimento de pacotes, onde não é recomendado compilar o pacote com arquivos externos simplesmente. O dataset pode ser criado com a função usethis::use_data() com o argumento internal = TRUE.","","Função pressupõe que o modelo benchmark (nesse caso, Focus) é constituído de previsões externas que são usadas tanto nos modelos como na forma de benchmark de acurácia, ou seja, devem ser providos os valores de previsões do benchmark no objeto do argumento data. Além disso, por conta de adaptação/generalização do código foi necessário definir na documentação da função tags do tipo @importFrom para importar funções específicas de determinados pacotes usados no código.","","","O arquivo de template da dashboard é disponibilizado com o próprio pacote e pode ser criado com a função usethis::use_rmarkdown_template(); nesse caso usamos o template criado previamente neste curso. A função possibilita algumas personalizações quanto aos gráficos da dashboard, já exposta previamente neste curso. Em pacotes de R não é permitido o uso direto de caracteres que não sejam da codificação ASCII, portanto na documentação precisamos substituir essas letras pelos códigos unicodes correspondentes (a função stringi::stri_escape_unicode() pode ajudar nisso) e colocar a tag @encoding UTF-8."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Função<\/th>\n      <th>Arquivo<\/th>\n      <th>Descrição<\/th>\n      <th>Observação<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"tip","pageLength":1,"scrollX":true,"scrollY":true,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[1,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+
+
+
+---
+class: middle, center, inverse
+# Deploy do pacote
+
+
+---
+### Teste local com o `{devtools}`
+
+Uma vez que todas as funcionalidades tenham sido criadas, é importante executar mais um teste `R CMD check` no pacote para ter certeza de que não há nenhum problema. Se o resultado do teste apontar 0 erros/avisos/notas, então nosso pacote `{ipca}` está pronto para ser instalado em outros computadores e utilizado por outros usuários. Para rodar o teste utilizamos novamente o comando abaixo do pacote `{devtools}`:
+
+```r
+devtools::check()
+```
+
+&lt;img src="imgs/check04.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+Nos resultados é reportado apenas o uso de um grande número de pacotes nas funções. É recomendável usar o mínimo possível de funções de outros pacotes no seu pacote, para evitar problemas futuros. No caso de pacotes para modelos preditivos isso é difícil de ser alcançado, a menos que você esteja confortável e tenha tempo para escrever suas próprias funções para eliminar o uso de funções externas. Sendo assim, consideramos o pacote pronto para ser testado em outras plataformas!
+
+
+---
+### Subindo o pacote para o GitHub
+
+Agora iremos subir para a plataforma do GitHub este repositório local que vinhamos trabalhando, abrindo assim a possibilidade de rodar o teste `R CMD check` em outros computadores através do GitHub Actions. Se você quer ter certeza que outros usuários conseguirão utilizar seu pacote/funções, esse procedimento é importante!
+
+Antes de subir o pacote para o GitHub, porém, é também importante criar um arquivo README com as informações gerais sobre o repositório, sobre o pacote e sobre sua utilização. Esse procedimento é opcional, mas é uma boa prática em desenvolvimento de softwares que constitui o ponto de inflexão entre as pessoas utilizarem ou não o seu pacote. Se não houverem informações básicas no repositório sobre como instalar o pacote, muito provavelmente as pessoas não saberão como fazê-lo e, portanto, não utilizarão o pacote.
+
+Para criar o arquivo README basta executar o comando abaixo:
+
+```r
+usethis::use_readme_rmd()
+```
+
+Será criado um arquivo `.Rmd` no repositório, já com a estrutura de seções com as informações que você deve preencher. Você pode preencher este documento em português se seu público é esse, mas recomenda-se utilizar o inglês se você planeja publicar o pacote na internet para uso geral.
+
+
+---
+### Subindo o pacote para o GitHub
+
+Como exemplo, preenchemos o arquivo README com as seguintes informações:
+
+````md
+---
+output: github_document
+---
+
+&lt;!-- README.md is generated from README.Rmd. Please edit that file --&gt;
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#&gt;",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# ipca
+
+&lt;!-- badges: start --&gt;
+&lt;!-- badges: end --&gt;
+
+O objetivo deste pacote é gerar um **modelo automatizado de previsão da inflação** da economia brasileira medida pelo **[IPCA/IBGE](https://www.ibge.gov.br/estatisticas/economicas/precos-e-custos/9256-indice-nacional-de-precos-ao-consumidor-amplo.html)**. Além de realizar a modelagem e previsão, o pacote reporta os resultados através de uma [dashboard](https://analisemacropro.github.io/ipca/) resumo.
+
+Este pacote desenvolvido em `R`, o modelo, os códigos, etc. fazem parte dos **cursos da [Análise Macro](https://analisemacro.com.br/)**.
+
+## Licença
+
+Copyright 2021 Análise Macro. All rights reserved.
+
+## Sobre o workflow
+
+Utilizando o pacote `{caret}` e o `{HDeconometrics}`, são estimados cinco modelos: CSR, LASSO, Bagging, Random Walk e Ensemble, além de comparação com um benchmark de mercado (Focus), que são avaliados utilizando o método da validação cruzada.
+
+As etapas realizadas e funcionalidades referentes podem ser descritas conforme abaixo:
+
+| Procedimento | Função |
+| ------------ | ------ |
+| 1) Coleta e tratamento de dados | `ipca::get_data()` e `ipca::ts_transform()` |
+| 2) Treinamento dos modelos (validação cruzada e cálculo de acurácia) | `ipca::train_models()` |
+| 3) Previsão fora da amostra do modelo Ensemble | `ipca::forecast_ensemble()` |
+| 4) Automatização das etapas 1 a 3 e criação de dashboard de resultados | `ipca::build_dashboard()` |
+
+## Instalação
+
+O pacote pode ser instalado através do [GitHub](https://github.com/) com o `{remotes}`:
+
+```{r}
+# if (!require("remotes")) install.packages("remotes")
+remotes::install_github("analisemacropro/ipca")
+```
+
+## Utilização
+
+A principal função do pacote é capaz de reproduzir todo o workflow e gerar uma dashboard de resultados (arquivo HTML da Flexdashboard):
+
+```{r}
+library(ipca)
+
+td &lt;- tempdir()
+build_dashboard(save_at = td)
+```
+
+Uma prévia do resultado pode ser conferida abaixo:
+
+![](docs/printscreen.png)
+
+Para utilizar as demais funções verifique as documentações referentes.
+
+````
+
+
+
+---
+### Subindo o pacote para o GitHub
+
+Uma vez concluído o preenchimento de informações sobre o pacote, clique no botão Knit do RStudio para renderizar o arquivo e, em seguida, realize o *commit* das alterações no repositório. Com o arquivo README criado podemos prosseguir.
+
+Já demonstramos previamente no curso como criar o repositório remoto no GitHub a partir de um repositório local, portanto agora vamos direto ao comando que realiza a operação:
+
+```r
+usethis::use_github()
+```
+
+Isso fará com que o seu pacote fique disponível no GitHub.
+
+
+---
+### Subindo o pacote para o GitHub
+
+Você deve obter uma página de repositório no GitHub como esta abaixo (este repositório está como privado):
+
+&lt;img src="imgs/github.gif" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+### Instalação a partir do GitHub
+
+Dessa forma, agora podemos testar a instalação do pacote `{ipca}` em qualquer computador usando o comando abaixo (se o repositório for público; em caso de repositório privado utilize o argumento `auth_token`). É importante executar o comando em uma sessão nova de R. 
+
+```r
+remotes::install_github("schoulten/ipca")
+```
+
+Note que você deve substituir o nome da conta de usuário e nome do repositório para corresponder às suas informações. Se você executar o comando sem substituir as informações você obterá um erro.
+
+Você pode testar a instalação em seu próprio computador ou em um ambiente de R na nuvem como o RStudio Cloud ou Google Colab. Para saber como usar essas plataformas confira [este post no blog da Análise Macro](https://analisemacro.com.br/data-science/como-rodar-o-r-na-nuvem-google-colab-e-rstudio-cloud/).
+
+Caso você obtenha um erro de instalação será necessário uma investigação sobre para implementar a solução. Se isso acontecer, pode ser derivado de algo do pacote que é problemático mas que não está sendo apontado nos testes do `R CMD check` e uma pesquisa no Google sobre o erro pode ser um bom ponto de partida.
+
+Após instalar, vale testar o carregamento do pacote (`library()`) e testar suas funções.
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Uma forma mais robusta de testar se o seu pacote está funcional é o uso de testes de integração contínua. Este tópico é mais complexo e avançado, mas em termos práticos pode ser facilmente implementado usando uma única função do `{usethis}` para configurar um workflow no GitHub Actions.
+
+Em resumo, o que faremos é criar uma rotina automatiza de testagem do nosso pacote hospedado no GitHub, através de uma instrução para que os servidores do GitHub testem com um `R CMD check` se o nosso pacote está funcionando corretamente (similar ao que fizemos diversas vezes com o `devtools::check()`). Ou seja, deixaremos o trabalho manual de lado para que uma máquina faça isso por nós. E isso será feito em múltiplas plataformas — Windows, Linux, MacOS, etc. —, garantindo assim maior certeza sobre a funcionalidade do pacote. Testes automatizados fazem parte das boas práticas de programação, sendo altamente recomendável termos esse processo se o pacote/software será utilizado por outras pessoas.
+
+Parar criar o teste automatizado basta executar o comando abaixo:
+
+```r
+usethis::use_github_action_check_standard()
+```
+
+Será criado um arquivo de workflow (`.yaml`) implementando rotinas de `R CMD check`.  Após isso renderize novamente seu arquivo README criado anteriormente.
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Em seguida realize o *commit* e *push* dessas alterações do repositório. Como resultado você deve ter trabalhos em execução na aba *Actions* do repositório no GitHub.
+
+&lt;img src="imgs/actions.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+O esperado é que todos os testes retornem resultado de sucesso. Se você obtiver erros, avisos ou notas, dependendo do que for, leia o resultado para investigar uma solução.
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Em nosso caso, precisamos corrigir os pacotes declarados como dependências, pois obtivemos a seguinte nota no `R CMD check` executado no GitHub Actions (acesse os resultados clicando na aba *Actions* &gt; *Workflow* executado &gt; em *Job* selecione um sistema operacional &gt; expanda o *step* "*Run r-lib/actions/check-r-package@v1*"):
+
+&lt;img src="imgs/note.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+.pull-left[
+
+Para solucionar o problema é necessário remover manualmente os pacotes da seção `Imports` do arquivo `DESCRIPTION` e colocar os mesmos na seção `Suggests` com o comando:
+
+```r
+usethis::use_package("&lt;NOME DO PACOTE&gt;", type = "Suggests")
+```
+
+Como resultado teremos:
+
+]
+
+.pull-right[
+
+&lt;img src="imgs/description.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+### Criando testes automatizados com GitHub Actions
+
+Novamente, faça o *commit* e *push* das alterações realizadas no respositório e aguarde os resultados do novo teste `R CMD check` que será executado automaticamente pelo GitHub Actions. Como resultado você deve ter algo aproximado com o apresentado abaixo:
+
+&lt;img src="imgs/actions_check.gif" width="70%" style="display: block; margin: auto;" /&gt;
+
+o que já é suficiente para o nosso propósito&lt;sup&gt;1&lt;/sup&gt;.
+
+.footnote[
+
+&lt;sup&gt;1&lt;/sup&gt; O *warning* na plataforma Windows é devido ao uso de caracteres não ASCII na documentação da função `build_dashboard()`, o que acaba gerando no arquivo de help da função uma codificação não suportada nesse trecho; isso pode ser resolvido ao não utilizar estes caracteres ou envolvendo o texto com a função `rlang::as_utf8_character`.
+
+]
+
+
+---
+### Criando rotina de automatização do modelo
+
+Agora que temos um pacote para o modelo do IPCA funcional e hospedado no GitHub, iremos utilizá-lo para automatizar o processo de gerar previsões e reportar os resultados em uma dashboard. Isso será feito, novamente, com a ajuda do GitHub Actions.
+
+O procedimento é muito semelhante ao já abordado na Parte 02 desta aula, a única diferença é que em vez de chamar diretamente um arquivo de script de R no workflow do GitHub Actions, chamaremos as funções do próprio pacote `{ipca}` que realizam o mesmo trabalho. Sendo assim, os procedimentos para criar essa rotina de automatização são os mesmos, o que muda é o *Step* no workflow que realiza todos os procedimentos do modelo (dados, treinamento, dashboard, etc.). 
+
+Indo direto ao ponto, realizamos os seguintes procedimentos:
+
+1. Configurar o gerenciamento de dependências: `{renv}`;
+2. Adicionar o novo arquivo YAML com ajustes (próx. slide);
+3. Realizar *commit* e *push* das alterações;
+4. Aguardar resultados dos workflows;
+5. Configurar link da dashboard no GitHub Pages.
+
+Conforme mencionado, estes procedimentos já foram todos abordados previamente, a seguir mostramos apenas os resultados.
+
+
+---
+### Criando rotina de automatização do modelo
+
+O novo arquivo YAML adicionado possui as seguintes instruções (repare as linhas 42 a 63 para observar as diferenças):
+
+```yaml
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  push:
+    branches: [main, master]
+  schedule:
+    - cron: "0 0 15 * *"
+
+name: Model update
+
+jobs:
+  model-update:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      RENV_PATHS_ROOT: ~/.local/share/renv
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install curl
+        run: sudo apt -y install libcurl4-openssl-dev
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore packages
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore()
+        shell: Rscript {0}
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Install workflow dependencies
+        run: |
+          install.packages(c("withr", "devtools"))
+        shell: Rscript {0}
+
+      - name: Set locale
+        run: |
+          sudo apt-get update &amp;&amp; sudo apt-get install tzdata locales -y &amp;&amp; sudo locale-gen pt_BR.UTF-8
+          sudo localectl set-locale LANG="pt_BR.UTF-8"
+          export LANG="pt_BR.UTF-8"
+          sudo update-locale
+          locale -a
+          locale
+          locale -c -k LC_NUMERIC
+          localectl status
+
+      - name: Update model and knit dashboard
+        run: |
+          devtools::load_all()
+          withr::local_locale(c("LC_TIME" = "pt_BR.utf8"))
+          build_dashboard()
+        shell: Rscript {0}
+
+      - name: Commit results
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add .
+          git commit -m "Update model and dashboard" || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
+```
+
+
+---
+### Criando rotina de automatização do modelo
+
+Resultado do `R CMD check` no GitHub Actions:
+
+&lt;img src="imgs/actions_check2.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+Link para a dashboard automatizada: [https://analisemacropro.github.io/ipca/](https://analisemacropro.github.io/ipca/)
+
+
+---
+### Comentários
+
+O pacote `{ipca}` possui muitas dependências e isso é problemático. Por exemplo, se, por qualquer motivo, algum dos pacotes utilizados internamente para coletar dados falhar (o que é muito comum), o pacote `{ipca}` também irá falhar, inviabilizando seu uso. Isso pode ser contornado diminuindo o número de pacotes externos utilizados ou utilizando os mesmos de forma condicional. Procedimentos mais robustos na coleta de dados também podem ser adotados. Para saber mais sobre isso consulte Wickham, H. (2015) e [este post](https://analisemacro.com.br/data-science/lidando-com-erros-de-funcoes-que-podem-falhar-usando-o-purrr/) no blog da Análise Macro. Outra opção é utilizar um banco de dados proprietário, eliminando do seu código múltiplas dependências de API's de dados.
+
+Como exemplo, podemos citar que durante o desenvolvimento do pacote `{ipca}` encontramos problemas com uma de suas dependências: o pacote `{gtrendsR}` passou a apresentar um erro inesperadamente em sua versão 1.5.0, inviabilizando esta etapa de coleta de dados do fluxo de trabalho interno do pacote `{ipca}`. Neste caso, tivemos que aguardar os desenvolvedores do `{gtrendsR}` corrigirem o problema, através do lançamento da versão 1.5.1. Ou seja, consumo de dados públicos é uma vulnerabilidade em qualquer código no longo prazo, sendo grandes as chances de você precisar alterar o seu código quando uma mudança de API de dados, por exemplo, acontecer. Em outras palavras, desenvolver modelos de previsão não é apenas sobre modelos, mas sobretudo o processamento de dados implementado. 
+
+Infelizmente não temos como prever esses acontecimentos e fornecemos apenas um código funcional no momento em que o mesmo é criado. As rotinas de automatização podem ajudar a monitorar a funcionalidade do código ao longo do tempo e, assim, podemos agir com um correção quando um erro acontecer. Se você encontrar algum erro no código não exite em reportar ao suporte da Análise Macro!
+
+
+
+
+---
+### Referências
+
+Wickham, H. (2015). *R packages: organize, test, document, and share your code.* O'Reilly Media, Inc. r-pkgs.org. Accessed on 2022-05-17.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
