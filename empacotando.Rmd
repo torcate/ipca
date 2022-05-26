@@ -705,13 +705,19 @@ knitr::include_graphics("imgs/description.png")
 ---
 ### Criando testes automatizados com GitHub Actions
 
-Novamente, faça o *commit* e *push* das alterações realizadas no respositório e aguarde os resultados do novo teste `R CMD check` que será executado automaticamente pelo GitHub Actions. Como resultado você deve ter algo aproximado com o apresentado abaixo:
+.pull-left[
 
-```{r, echo=FALSE, out.width="70%"}
+Novamente, faça o *commit* e *push* das alterações realizadas no respositório e aguarde os resultados do novo teste `R CMD check` que será executado automaticamente pelo GitHub Actions. Como resultado você deve ter algo aproximado com o apresentado ao lado, o que já é suficiente para o nosso propósito<sup>1</sup>.
+
+]
+
+.pull-right[
+
+```{r, echo=FALSE}
 knitr::include_graphics("imgs/actions_check.gif")
 ```
 
-o que já é suficiente para o nosso propósito<sup>1</sup>.
+]
 
 .footnote[
 
@@ -833,11 +839,11 @@ Link para a dashboard automatizada: [https://analisemacropro.github.io/ipca/](ht
 ---
 ### Comentários
 
-O pacote `{ipca}` possui muitas dependências e isso é problemático. Por exemplo, se, por qualquer motivo, algum dos pacotes utilizados internamente para coletar dados falhar (o que é muito comum), o pacote `{ipca}` também irá falhar, inviabilizando seu uso. Isso pode ser contornado diminuindo o número de pacotes externos utilizados ou utilizando os mesmos de forma condicional. Procedimentos mais robustos na coleta de dados também podem ser adotados. Para saber mais sobre isso consulte Wickham, H. (2015) e [este post](https://analisemacro.com.br/data-science/lidando-com-erros-de-funcoes-que-podem-falhar-usando-o-purrr/) no blog da Análise Macro. Outra opção é utilizar um banco de dados proprietário, eliminando do seu código múltiplas dependências de API's de dados.
+O pacote `{ipca}` possui muitas dependências e isso é problemático. Por exemplo, se, por qualquer motivo, algum dos pacotes utilizados internamente para coletar dados falhar (o que é muito comum), o pacote `{ipca}` também irá falhar, inviabilizando seu uso. Isso pode ser contornado diminuindo o número de pacotes externos utilizados ou utilizando os mesmos de forma condicional. Procedimentos mais robustos na coleta de dados também podem ser adotados. Para saber mais sobre isso consulte Wickham, H. (2015) e [este post](https://analisemacro.com.br/data-science/lidando-com-erros-de-funcoes-que-podem-falhar-usando-o-purrr/) no blog da Análise Macro. Outra opção é utilizar um banco de dados proprietário, eliminando do seu código múltiplas dependências de API's.
 
 Como exemplo, podemos citar que durante o desenvolvimento do pacote `{ipca}` encontramos problemas com uma de suas dependências: o pacote `{gtrendsR}` passou a apresentar um erro inesperadamente em sua versão 1.5.0, inviabilizando esta etapa de coleta de dados do fluxo de trabalho interno do pacote `{ipca}`. Neste caso, tivemos que aguardar os desenvolvedores do `{gtrendsR}` corrigirem o problema, através do lançamento da versão 1.5.1. Ou seja, consumo de dados públicos é uma vulnerabilidade em qualquer código no longo prazo, sendo grandes as chances de você precisar alterar o seu código quando uma mudança de API de dados, por exemplo, acontecer. Em outras palavras, desenvolver modelos de previsão não é apenas sobre modelos, mas sobretudo o processamento de dados implementado. 
 
-Infelizmente não temos como prever esses acontecimentos e fornecemos apenas um código funcional no momento em que o mesmo é criado. As rotinas de automatização podem ajudar a monitorar a funcionalidade do código ao longo do tempo e, assim, podemos agir com um correção quando um erro acontecer. Se você encontrar algum erro no código não exite em reportar ao suporte da Análise Macro!
+Infelizmente não temos como prever esses acontecimentos e fornecemos apenas um código funcional no momento em que o mesmo é criado. As rotinas de automatização podem ajudar a monitorar a funcionalidade ao longo do tempo e, assim, podemos agir com um correção quando um erro acontecer. Se você encontrar algum erro não exite em reportar ao suporte da Análise Macro!
 
 
 
