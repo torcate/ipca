@@ -9,7 +9,36 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
-    magrittr,
+    caret,
     dplyr,
+    DT,
     forecast,
-    purrr
+    GetBCBData,
+    ggplot2,
+    ggtext,
+    gtrendsR,
+    HDeconometrics (>= 0.1.0),
+    ipeadatar,
+    lubridate,
+    magrittr,
+    purrr,
+    rbcb,
+    rlang,
+    rmarkdown,
+    scales,
+    sidrar,
+    stats,
+    stringr,
+    tidyr,
+    timetk,
+    tsibble
+Depends: 
+    R (>= 2.10)
+Remotes: 
+    gabrielrvsc/HDeconometrics
+Suggests: 
+    flexdashboard,
+    glmnet,
+    knitr
+URL: https://github.com/schoulten/ipca
+BugReports: https://github.com/schoulten/ipca/issues
