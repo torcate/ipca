@@ -1,44 +1,11 @@
 Package: ipca
-Title: Brazilian Inflation Forecasting Model
+Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person("Denilson", "Torcate", , "denilson.torcate@gmail.com", role = c("aut", "cre"))
-Description: Series of functions for data collection and pre-processing, estimation of LASSO, CSR, Bagging and Ensemble models, training using cross-validation, forecasting and dashboard reporting.
-License: MIT + file LICENSE
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Imports: 
-    caret,
-    dplyr,
-    DT,
-    forecast,
-    GetBCBData,
-    ggplot2,
-    ggtext,
-    gtrendsR,
-    HDeconometrics (>= 0.1.0),
-    ipeadatar,
-    lubridate,
-    magrittr,
-    purrr,
-    rbcb,
-    rlang,
-    rmarkdown,
-    scales,
-    sidrar,
-    stats,
-    stringr,
-    tidyr,
-    timetk,
-    tsibble
-Depends: 
-    R (>= 2.10)
-Remotes: 
-    gabrielrvsc/HDeconometrics
-Suggests: 
-    flexdashboard,
-    glmnet,
-    knitr
-URL: https://github.com/schoulten/ipca
-BugReports: https://github.com/schoulten/ipca/issues

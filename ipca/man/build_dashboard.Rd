@@ -13,7 +13,7 @@ build_dashboard(
   ensemble_col = "ensemble",
   title_fanchart = rlang::as_utf8_character("**Fanchart**: Previsão do IPCA"),
   y_lab_fanchart = "\% a.m.",
-  caption_lab = rlang::as_utf8_character("**Elaboração:** FIESP"),
+  caption_lab = rlang::as_utf8_character("**Elaboração:** analisemacro.com.br"),
   title_accuracy = rlang::as_utf8_character("**Acurácia**: performance por horizonte"),
   subtitle_accuracy = rlang::as_utf8_character("Modelos de previsão do IPCA"),
   x_lab_accuracy = "Horizonte (meses)",

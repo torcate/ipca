@@ -28,7 +28,7 @@ build_dashboard <- function (
   ensemble_col         = "ensemble",
   title_fanchart       = rlang::as_utf8_character("**Fanchart**: Previs\u00e3o do IPCA"),
   y_lab_fanchart       = "% a.m.",
-  caption_lab          = rlang::as_utf8_character("**Elabora\u00e7\u00e3o:** FIESP"),
+  caption_lab          = rlang::as_utf8_character("**Elabora\u00e7\u00e3o:** analisemacro.com.br"),
   title_accuracy       = rlang::as_utf8_character("**Acur\u00e1cia**: performance por horizonte"),
   subtitle_accuracy    = rlang::as_utf8_character("Modelos de previs\u00e3o do IPCA"),
   x_lab_accuracy       = "Horizonte (meses)",
@@ -108,7 +108,7 @@ build_dashboard <- function (
     ggplot2::geom_line(
       mapping = ggplot2::aes(y = !!rlang::sym(ensemble_col)),
       size    = 2,
-      color   = colors[2],
+      color   = colors[1],
       data    = dplyr::filter(df_fanchart, date >= max(my_df_tbl$date))
       ) +
     ggplot2::geom_vline(
