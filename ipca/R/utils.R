@@ -13,8 +13,8 @@ report_ndiffs <- function (
       purrr::map_chr(ndiffs_tests, 1),
       purrr::map_chr(ndiffs_tests, 2),
       sep = "_"
+      )
     )
-  )
   # Nested for-loop
   purrr::map(
     .x = if (na_rm) {stats::na.omit(x)} else x,
@@ -40,6 +40,6 @@ report_ndiffs <- function (
         names() %>%
         purrr::chuck(1) %>%
         as.numeric()
-    ) %>%
+      ) %>%
     dplyr::ungroup()
 }
