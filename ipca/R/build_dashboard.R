@@ -28,7 +28,7 @@ build_dashboard <- function (
   ensemble_col         = "ensemble",
   title_fanchart       = rlang::as_utf8_character("**Fanchart**: Previs\u00e3o do IPCA"),
   y_lab_fanchart       = "% a.m.",
-  caption_lab          = rlang::as_utf8_character("**Elabora\u00e7\u00e3o:** analisemacro.com.br"),
+  caption_lab          = rlang::as_utf8_character("**Elabora\u00e7\u00e3o:** FIESP"),
   title_accuracy       = rlang::as_utf8_character("**Acur\u00e1cia**: performance por horizonte"),
   subtitle_accuracy    = rlang::as_utf8_character("Modelos de previs\u00e3o do IPCA"),
   x_lab_accuracy       = "Horizonte (meses)",
@@ -227,9 +227,9 @@ build_dashboard <- function (
 
   # Verificar se pasta save_at existe
   if (!dir.exists(save_at)) { dir.create(save_at) }
-
+use_
   # Renderizar dashboard
-  rmd <- "rmarkdown/templates/dashboard/skeleton/skeleton.Rmd"
+  rmd <- "rmarkdown/templates/dash-ipca/skeleton/skeleton.Rmd"
   file <- system.file(rmd, package = "ipca")
   rmarkdown::render(input = file, output_file = "index", output_dir = save_at)
 

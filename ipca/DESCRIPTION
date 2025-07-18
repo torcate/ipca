@@ -2,7 +2,7 @@ Package: ipca
 Title: Brazilian Inflation Forecasting Model
 Version: 0.0.0.9000
 Authors@R: 
-    person("Denilson", "Torcate", , "denilson.torcate@gmail.com", role = c("aut", "cre")
+    person("Denilson", "Torcate", ,"denilson.torcate@gmail.com", role = c("aut", "cre"))
 Description: Series of functions for data collection and pre-processing, estimation of LASSO, CSR, Bagging and Ensemble models, training using cross-validation, forecasting and dashboard reporting.
 License: MIT + file LICENSE
 Encoding: UTF-8
