@@ -227,7 +227,7 @@ build_dashboard <- function (
 
   # Verificar se pasta save_at existe
   if (!dir.exists(save_at)) { dir.create(save_at) }
-use_
+
   # Renderizar dashboard
   rmd <- "rmarkdown/templates/dash-ipca/skeleton/skeleton.Rmd"
   file <- system.file(rmd, package = "ipca")
